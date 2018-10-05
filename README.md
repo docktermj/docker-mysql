@@ -40,7 +40,9 @@
 
     ```console
     docker network ls
-    export MYSQL_NETWORK=mysqlfile.sql
+    
+    # Choose value from NAME column of docker network ls
+    export MYSQL_NETWORK=nameofthe_network
     ```
 
 1. Create the docker container.

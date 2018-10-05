@@ -6,7 +6,6 @@ GIT_VERSION := $(shell git describe --always --tags --long --dirty | sed -e 's/\
 # Docker variables
 
 DOCKER_IMAGE_TAG ?= $(GIT_REPOSITORY_NAME):$(GIT_VERSION)
-DOCKER_CONTAINER_NAME ?= $(GIT_REPOSITORY_NAME)-$(GIT_VERSION)-container
 
 # -----------------------------------------------------------------------------
 # The first "make" target runs as default.
@@ -25,19 +24,9 @@ docker-build: docker-rmi
 		--tag $(DOCKER_IMAGE_TAG) \
 		.
 
-.PHONY: docker-run
-docker-run: docker-rm
-	docker run -it \
-	  --name $(DOCKER_CONTAINER_NAME) \
-	  $(DOCKER_IMAGE_TAG)
-
 # -----------------------------------------------------------------------------
 # Utility targets
 # -----------------------------------------------------------------------------
-
-.PHONY: docker-rm
-docker-rm:
-	-docker rm $(DOCKER_CONTAINER_NAME)
 
 .PHONY: docker-rmi
 docker-rmi:

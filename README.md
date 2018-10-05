@@ -1,8 +1,64 @@
 # docker-mysql
 
-## Background
+## Run Docker container
 
-## Create and run docker container
+1. Identify the file of SQL to be run.
+   Example:  If the actual file pathname is `/path/to/mysqlfile.sql`
+
+    ```console
+    export MYSQL_DIR=/path/to
+    export MYSQL_FILE=mysqlfile.sql
+    ```
+
+1. Identify the database username and password.
+   Example:
+
+    ```console
+    export MYSQL_USERNAME=root
+    export MYSQL_PASSWORD=root
+    ```
+
+1. Identify the database that is the target of the SQL statements.
+   Example:
+
+    ```console
+    export MYSQL_DATABASE=mydatabase
+    ```
+
+1. Identify the host running mySQL servers.
+   Example:
+
+    ```console
+    docker ps
+
+    # Choose value from NAMES column of docker ps
+    export MYSQL_HOST=docker-container-name
+    ```
+
+1. Identify the Docker network of the mySQL database.
+   Example:
+
+    ```console
+    docker network ls
+    export MYSQL_NETWORK=mysqlfile.sql
+    ```
+
+1. Create the docker container.
+   Note: parameters after dockter/mysql are [mysql CLI options](https://dev.mysql.com/doc/refman/5.7/en/mysql-command-options.html).
+
+    ```console
+    docker run -it  \
+      --volume ${MYSQL_DIR}:/sql \
+      --net ${MYSQL_NETWORK} \
+      dockter/mysql \
+        --user=${MYSQL_USERNAME} \
+        --password=${MYSQL_PASSWORD} \
+        --host=${MYSQL_HOST} \
+        --database=${MYSQL_DATABASE} \
+        --execute="source /sql/${MYSQL_FILE}"
+    ```
+
+## Create docker container
 
 ### Preparation
 
@@ -67,22 +123,6 @@ Option #2 - Using docker command
 cd ${GIT_REPOSITORY_DIR}
 docker build --tag ${DOCKER_IMAGE_TAG} .
 docker images
-```
-
-### Run Docker container
-
-Option #1 - Using make command
-
-```console
-cd ${GIT_REPOSITORY_DIR}
-make docker-run
-```
-
-Option #2 - Using docker command
-
-```console
-cd ${GIT_REPOSITORY_DIR}
-docker run -it --name ${DOCKER_CONTAINER_NAME} ${DOCKER_IMAGE_TAG}
 ```
 
 ### Push to hub.docker.com

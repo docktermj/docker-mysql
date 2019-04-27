@@ -21,6 +21,8 @@ default: help
 .PHONY: docker-build
 docker-build: docker-rmi
 	docker build \
+	    --tag senzing/mysql \
+		--tag senzing/mysql:$(GIT_VERSION) \
 		--tag $(DOCKER_IMAGE_TAG) \
 		.
 
